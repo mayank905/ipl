@@ -6,7 +6,6 @@ import java.util.*;
 
 public class ReadCSV
 {
-
     private String csvFile;
     public ReadCSV(String s)
     {
@@ -14,35 +13,39 @@ public class ReadCSV
         csvFile = s;
     }
 
-    public List<List> parse_matches_csvfile() {
+    public void parsecsvfile() {
 
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ",";
-        List<List> Total_Row = new ArrayList<List>();
+        Set<String> set_for_different_year = new HashSet<String>();
+        List<String> Year_list = new ArrayList<String>();
+        List<String> Winner_list = new ArrayList<String>();
+        Set<String> set_for_different_team = new HashSet<String>();
 
-        //Set<String> set_for_different_team = new HashSet<String>();
-
-
-        //  Map<String, String> map = new HashMap<String, String>();
+      //  Map<String, String> map = new HashMap<String, String>();
 
         try {
 
             br = new BufferedReader(new FileReader(csvFile));
             br.readLine();//skip heading
             while ((line = br.readLine()) != null) {
-                List<String> Each_Row = new ArrayList<String>();
-
 
                 // use comma as separator
                 String[] match = line.split(cvsSplitBy);
-                for (int i = 0; i < match.length; i++) {
-                    Each_Row.add(match[i]);
-                }
-                Total_Row.add(Each_Row);
+                set_for_different_year.add(match[1]);
+                set_for_different_team.add(match[4]);
+                Winner_list.add(match[10]);
+
+
+                Year_list.add(match[1]);
+
+                //System.out.println(match[1]);//print match year column
 
             }
-
+           //set_for_different_year.sort();
+           // System.out.println("total years= "+list);
+            //System.out.println("different years= "+set_for_different_year);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -57,9 +60,51 @@ public class ReadCSV
                 }
             }
         }
-        return Total_Row;
+
+        int set_size=set_for_different_year.size();
+
+        TreeSet<String> ordered_set_for_diff_year = new TreeSet<String>(set_for_different_year);
+        TreeSet<String> ordered_set_for_diff_team = new TreeSet<String>(set_for_different_team);
+
+        int list_size=Year_list.size();
+        int[] years_count = new int[set_size];//for storing count of no. of matches played
+
+        for(int i=0;i<list_size;i++)//loop for calculating count of no. of matches played
+        {
+            if (ordered_set_for_diff_year.contains(Year_list.get(i)))
+            {
+                int location=returnlocation(Year_list.get(i),ordered_set_for_diff_year);
+                years_count[location]+=1;
+            }
+        }
+        Map<String, Integer> number_of_matches = new HashMap<String, Integer>();
+        Map<String, Integer> per_year_win = new HashMap<String, Integer>();
+        HashMap<String, List<Map>> team_win = new HashMap<String, List<Map>>();
+
+        Enumeration e = Collections.enumeration(ordered_set_for_diff_year);
+        for(int j=0;j<list_size&&e.hasMoreElements();j++)
+        {
+            number_of_matches.put((String) e.nextElement(),years_count[j]);
+        }
+        System.out.println("Question1 answer");
+        System.out.println(number_of_matches);
+
+
 
     }
+
+    private int returnlocation(String s,TreeSet<String> t)
+    {
+        int place =0;
+        for (String find:t)
+        {
+            if(find.equals(s)){return place;}
+            else
+                place+=1;
+
+        }
+        return -1;
+
+    }
+
 }
-
-
