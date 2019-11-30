@@ -1,18 +1,18 @@
 package Constants;
 public class Constant
 {
-public static final String SEASON="season";
-public static final String WINNER="winner";
-public static final String ID="id";
+public static final int SEASON=1;
+public static final int WINNER=10;
+public static final int ID=0;
 public static final String YEAR="2016";
 public static final String YEAR2="2015";
-public static final String MATCH_ID="match_id";
-public static final String BOWLING_TEAM="bowling_team";
-public static final String EXTRA_RUNS="extra_runs";
-public static final String BOWLER="bowler";
-public static final String TOTAL_RUNS="total_runs";
-public static final String WIDE_RUNS="wide_runs";
-public static final String NO_BALL="noball_runs";
+public static final int MATCH_ID=0;
+public static final int BOWLING_TEAM=3;
+public static final int EXTRA_RUNS=16;
+public static final int BOWLER=8;
+public static final int TOTAL_RUNS=17;
+public static final int WIDE_RUNS=10;
+public static final int NO_BALL=13;
 public static final String MATCHES_CSV="matches.csv";
 public static final String DELIVERIES_CSV="deliveries.csv";
 public static final String Q1_ANS="Question1 Answer";

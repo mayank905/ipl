@@ -1,21 +1,28 @@
 import static Constants.Constant.*;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Main {
 
     public static void main(String[] args)
     {
-        Readcsv2 match_file =new Readcsv2(MATCHES_CSV);
-        List<Map> matchesList = match_file.parseMatchesCsvfile();
-        Readcsv2 deliveryFile =new Readcsv2(DELIVERIES_CSV);
-        List<Map> deliveryList = deliveryFile.parseMatchesCsvfile();
-        Service service1=new Service();
+        Readcsv2 match_file =new Readcsv2();
+        List<String[]> matchesStringList = match_file.parseMatchesCsvfile(MATCHES_CSV);
+        List<Match> matchesList =new ArrayList<>();
+        matchObject(matchesStringList,matchesList);
+
+
+        Readcsv2 deliveryFile =new Readcsv2();
+        List<String[]> deliveryStringList = deliveryFile.parseMatchesCsvfile(DELIVERIES_CSV);
+        List<Delivery> deliveryList =new ArrayList<>();
+        deliveryObject(deliveryStringList,deliveryList);
+
+
+
+
+        Service service1=new Service();//create service class object
 
 
         HashMap<String,Integer> noOfMatchPerYear=service1.question1(matchesList);
@@ -41,6 +48,33 @@ public class Main {
     {
         System.out.println(s);
         System.out.println(m);System.out.println();System.out.println();
+    }
+
+    private static void deliveryObject(List<String[]> deliveryStringList, List<Delivery> deliveryList)
+    {
+        deliveryStringList.stream().forEach(y->{
+            Delivery d1 =new Delivery();
+            d1.setBowlingTeam(y[BOWLING_TEAM]);//enter year value
+            d1.setExtraRuns(y[EXTRA_RUNS]);//enter winner value
+            d1.setMatchID(y[MATCH_ID]);
+            d1.setBowler(y[BOWLER]);
+            d1.setNoBall(y[NO_BALL]);
+            d1.setWideRuns(y[WIDE_RUNS]);
+            d1.setTotalRuns(y[TOTAL_RUNS]);
+            deliveryList.add(d1);
+        });
+    }
+
+    private static void matchObject(List<String[]> matchesStringList,List<Match> matchesList)
+    {
+        matchesStringList.stream().forEach(y->{
+            Match m1=new Match();
+            m1.setSeason(y[SEASON]);//enter year value
+            m1.setWinner(y[WINNER]);//enter winner value
+            m1.setMatchID(y[ID]);
+            matchesList.add(m1);
+        });
+
     }
 
 
